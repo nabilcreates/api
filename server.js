@@ -7,6 +7,8 @@ app.get('/', (request, response) => {
     response.send({
 
         port: PORT,
+
+        github: 'https://github.com/renabil/api',
         
         api: {
             'Reddit': {
@@ -16,10 +18,17 @@ app.get('/', (request, response) => {
                     limit: 'max 100, default 25'
                 }
             },
-            'Bus Stops': {
-                endpoint: '/api/bus/stop/:busstopnumber?',
+            'Bus Stops (By Code)': {
+                endpoint: '/api/bus/stop/code/:busstopnumber?',
                 params: {
                     busstopnumber: 'optional, returns all bus stops if the param is not inside the link'
+                }
+            },
+
+            'Bus Stops (By Name)': {
+                endpoint: '/api/bus/stop/name/:busstopname?',
+                params: {
+                    busstopname: 'optional, returns all bus stops if the param is not inside the link'
                 }
             }
         }
@@ -47,8 +56,8 @@ app.get('/api/reddit/:subreddit/:limit?', (request, response) => {
 
 })
 
-// BUS STOPS
-app.get('/api/bus/stop/:busstopnumber?', (request, response) => {
+// BUS STOPS (CODE)
+app.get('/api/bus/stop/code/:busstopnumber?', (request, response) => {
 
     var busstopnumber = request.params.busstopnumber;
 
@@ -75,6 +84,36 @@ app.get('/api/bus/stop/:busstopnumber?', (request, response) => {
     }
 
 })
+
+// BUS STOPS (NAME)
+app.get('/api/bus/stop/name/:busstopname?', (request, response) => {
+
+    var busstopname = request.params.busstopname.toLowerCase();
+
+    if (busstopname) {
+        fetch('https://busrouter.sg/data/2/bus-stops.json')
+            .then(response => response.json())
+            .then(json => {
+                var rtnvalue = json.filter(data => {
+                    return data.name.toLowerCase().match(busstopname)
+                })
+
+                response.send(rtnvalue)
+            })
+    } else {
+        fetch('https://busrouter.sg/data/2/bus-stops.json')
+            .then(response => response.json())
+            .then(json => {
+                var rtnvalue = json.filter(data => {
+                    return data.name.toLowerCase().match()
+                })
+
+                response.send(rtnvalue)
+            })
+    }
+
+})
+
 
 app.listen(PORT, () => {
     console.log('Server is running!')
