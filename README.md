@@ -7,5 +7,5 @@
 ```bash
 npm install
 node server.js
-# Then, go to localhost:3030 or you can change it on your own
+# Then, go to localhost:5000 or you can change it on your own
 ```
