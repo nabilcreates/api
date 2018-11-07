@@ -1,12 +1,12 @@
 var express = require('express');
 var fetch = require('node-fetch');
 var app = express();
-var port = 3030;
+const PORT = process.env.PORT || 5000
 
 app.get('/', (request, response) => {
     response.send({
 
-        port: port,
+        port: PORT,
         
         api: {
             'Reddit': {
@@ -76,6 +76,6 @@ app.get('/api/bus/stop/:busstopnumber?', (request, response) => {
 
 })
 
-app.listen(port, () => {
+app.listen(PORT, () => {
     console.log('Server is running!')
 })
