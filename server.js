@@ -5,6 +5,9 @@ var port = 3030;
 
 app.get('/', (request, response) => {
     response.send({
+
+        port: port,
+        
         api: {
             'Reddit': {
                 endpoint: '/api/reddit/:subreddit/:limit?',
